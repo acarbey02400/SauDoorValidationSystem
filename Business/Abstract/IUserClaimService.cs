@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Business.Abstract
 {
     public interface IUserClaimService
-    {
+    { 
         public IResult add(UserClaim userClaim);
         public IResult update(UserClaim userClaim);
         public IResult delete(UserClaim userClaim);

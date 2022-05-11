@@ -18,6 +18,8 @@ namespace DataAccess.Concrete
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
-        public DbSet<UserClaim> UserClaims { get; set; }
+        public DbSet<Door> Doors { get; set; }
+        public DbSet<DoorRole> DoorRole { get; set; }
+
     }
 }

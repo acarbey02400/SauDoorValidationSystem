@@ -11,18 +11,22 @@ namespace Business.Concrete
 {
     public class VerificationManager : IVerificationService
     {
-        IUserDal _userDal;
-        public VerificationManager(IUserDal userDal)
+        IDoorRoleDal _doorRoleDal;
+        public VerificationManager(IDoorRoleDal doorRoleDal)
         {
-            _userDal = userDal;
+            _doorRoleDal = doorRoleDal;
         }
-        public IResult Validate(string UId, int claimId)
+        public IResult Validate(string UId,int doorId)
         {
-            if (_userDal.AuthVerification(UId,claimId))
+            var result = _doorRoleDal.AuthVerification(UId);
+            foreach (var item in result)
             {
-                return new SuccessResult("doğrulama başarılı");
+                if (item.doorId==doorId)
+                {
+                    return new SuccessResult(item.name+" doğrulandı.");
+                }
             }
-            return new ErrorResult("doğrulama başarısız");
-           }
+            return new ErrorResult("doğrulanamadı.");
+        }
     }
 }

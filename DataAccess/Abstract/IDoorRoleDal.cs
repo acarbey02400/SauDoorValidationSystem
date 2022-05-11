@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IUserClaimDal:IEntityRepository<UserClaim>
+    public interface IDoorRoleDal:IEntityRepository<DoorRole>
     {
+        public List<DoorRole> AuthVerification(string UID);
     }
 }

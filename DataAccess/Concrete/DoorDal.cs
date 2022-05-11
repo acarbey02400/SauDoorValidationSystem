@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
-    public class UserClaimDal:EfEntityRepositoryBase<UserClaim,SauDbContext>,IUserClaimDal
+    public class DoorDal:EfEntityRepositoryBase<Door,SauDbContext>,IDoorDal
     {
     }
 }

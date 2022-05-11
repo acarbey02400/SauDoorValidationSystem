@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class UserType:IEntity
+    public class Door:IEntity
     {
         public int id { get; set; }
-        public string? name { get; set; }
-
+        public string ?name { get; set; }
     }
 }

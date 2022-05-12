@@ -16,10 +16,11 @@ namespace DataAccess.Concrete
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SauDb;Trusted_Connection=true");
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserType> UserTypes { get; set; }
-        public DbSet<Door> Doors { get; set; }
-        public DbSet<DoorRole> DoorRole { get; set; }
+        public DbSet<User> ?Users { get; set; }
+        public DbSet<UserType> ?UserTypes { get; set; }
+        public DbSet<Door> ?Doors { get; set; }
+        public DbSet<DoorRole> ?DoorRole { get; set; }
+        public DbSet<UserValidationDoor> ?UserValidationDoor { get; set; }
 
     }
 }

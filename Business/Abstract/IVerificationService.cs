@@ -9,6 +9,7 @@ namespace Business.Abstract
 {
     public interface IVerificationService
     {
-        public IResult Validate(string UId,int doorId);
+        public IResult Validate(string UId,int doorId, int date, int hour);
+        public IResult UserValidationDoor(string UId, int doorId, int date, int hour);
     }
 }

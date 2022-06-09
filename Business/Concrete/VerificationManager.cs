@@ -18,41 +18,41 @@ namespace Business.Concrete
             _doorRoleDal = doorRoleDal;
             _userValidationDoorDal = userValidationDoorDal;
         }
-        public IResult Validate(string UId,int doorId,int date, int hour)
+        public IResult Validate(string UId, int doorId, DateTime dateTime)
         {
             var result = _doorRoleDal.AuthVerification(UId);
             foreach (var item in result)
             {
-                if (item.doorId==doorId)
+                if (item.doorId == doorId)
                 {
-                    return UserValidationDoor(UId,doorId,date,hour);
+                    return UserValidationDoor(UId, doorId, dateTime);
                 }
             }
-            
-            if (_userValidationDoorDal.UserAuthDoor(UId, doorId).Count>0)
+
+            if (_userValidationDoorDal.UserAuthDoor(UId, doorId).Count > 0)
             {
-                return UserValidationDoor(UId, doorId, date, hour);
+                return UserValidationDoor(UId, doorId, dateTime);
             }
             return new ErrorResult("doğrulanamadı.");
         }
-        public IResult UserValidationDoor(string UId,int doorId,int date,int hour)
+        public IResult UserValidationDoor(string UId, int doorId, DateTime dateTime)
         {
-           var result= _userValidationDoorDal.UserAuthDoor(UId, doorId);
-            if (result.Count==0)
+            var result = _userValidationDoorDal.UserAuthDoor(UId, doorId);
+            if (result.Count == 0)
             {
                 return new SuccessResult("doğrulandı");
             }
             foreach (var item in result)
             {
-              
-                 if (item.startDate <= date && item.stopDate >= date && item.startTime <= hour && item.stopTime >= hour)
+
+                if (item.startDate.Day <= dateTime.Day && item.stopDate.Day >= dateTime.Day && item.startDate.Hour <= dateTime.Hour && item.stopDate.Hour >= dateTime.Hour)
                 {
                     return new SuccessResult("doğrulandı");
                 }
-                
+
             }
             return new ErrorResult("doğrulanamadı");
         }
-           
+
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class DoorRoleManager : DoorRole
+    public class DoorRoleManager : IDoorRoleService
     {
         IDoorRoleDal _userClaimDal;
         public DoorRoleManager(IDoorRoleDal userClaimDal)

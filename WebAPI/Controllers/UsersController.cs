@@ -40,7 +40,22 @@ namespace WebAPI.Controllers
                 }
             }
 
-            [HttpPost("add")]
+
+        [HttpGet("getbyuid")]
+        public IActionResult GetByUId(string UId)
+        {
+            var result = _userService.getByUId(UId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        [HttpPost("add")]
             public IActionResult Add(User user)
             {
                 var result = _userService.add(user);

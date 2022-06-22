@@ -13,5 +13,7 @@ namespace DataAccess.Concrete
     public class UserDal : EfEntityRepositoryBase<User, SauDbContext>, IUserDal
     {
        
+
+       
     }
 }

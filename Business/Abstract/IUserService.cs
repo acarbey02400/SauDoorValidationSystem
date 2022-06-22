@@ -16,5 +16,6 @@ namespace Business.Abstract
         public IDataResult<List<User>> getAll();
         public IDataResult<List<User>> getByTypeId(int UserType);
         public IDataResult<User> getById(int id);
+        public IDataResult<User> getByUId(string UId);
     }
 }

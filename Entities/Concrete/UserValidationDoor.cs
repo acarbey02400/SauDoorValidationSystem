@@ -15,6 +15,7 @@ namespace Entities.Concrete
         public int userId { get; set; }
         public DateTime startDate { get; set; }
         public DateTime stopDate { get; set; }
+        public bool status { get; set; }
 
     }
 }

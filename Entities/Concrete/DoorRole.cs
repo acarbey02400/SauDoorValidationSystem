@@ -13,5 +13,6 @@ namespace Entities.Concrete
         public string name { get; set; }
         public int userTypeId { get; set; }
         public int doorId { get; set; }
+       
     }
 }

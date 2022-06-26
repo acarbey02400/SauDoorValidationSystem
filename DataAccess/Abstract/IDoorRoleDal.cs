@@ -10,6 +10,6 @@ namespace DataAccess.Abstract
 {
     public interface IDoorRoleDal:IEntityRepository<DoorRole>
     {
-        public List<DoorRole> AuthVerification(string UID);
+        public List<DoorRole> AuthVerification(string UID, int doorId);
     }
 }

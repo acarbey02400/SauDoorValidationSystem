@@ -11,7 +11,7 @@ namespace DataAccess.Concrete
 {
     public class DoorRoleDal:EfEntityRepositoryBase<DoorRole,SauDbContext>,IDoorRoleDal
     {
-        public List<DoorRole> AuthVerification(string UId)
+        public List<DoorRole> AuthVerification(string UId,int doorId)
         {
             using (SauDbContext context = new SauDbContext())
             {
@@ -19,6 +19,7 @@ namespace DataAccess.Concrete
                              where p.UId == UId
                              join dr in context.DoorRole
                              on p.userTypeId equals dr.userTypeId
+                             where dr.doorId==doorId
                              select new DoorRole { id =dr.id, doorId=dr.doorId, userTypeId=p.userTypeId };
 
                 return result.ToList();

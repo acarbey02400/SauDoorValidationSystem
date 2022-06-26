@@ -20,7 +20,7 @@ namespace DataAccess.Concrete
                              join ur in context.UserValidationDoor
                              on p.id equals ur.userId
                              where ur.doorId == doorId
-                             select new UserValidationDoor { id=ur.id, name=ur.name, doorId=doorId, userId=p.id, startDate=ur.startDate, stopDate=ur.stopDate };
+                             select new UserValidationDoor { id=ur.id, name=ur.name, doorId=doorId, userId=p.id, startDate=ur.startDate, stopDate=ur.stopDate, status=ur.status };
 
                 return result.ToList();
             }

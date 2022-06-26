@@ -13,6 +13,7 @@ namespace Business.Concrete
     public class DoorRoleManager : IDoorRoleService
     {
         IDoorRoleDal _userClaimDal;
+
         public DoorRoleManager(IDoorRoleDal userClaimDal)
         {
             _userClaimDal = userClaimDal;
@@ -42,6 +43,16 @@ namespace Business.Concrete
         {
             _userClaimDal.Update(userClaim);
             return new SuccessResult();
+        }
+
+        public IResult Verification(string UId,int doorId)
+        {
+           var result= _userClaimDal.AuthVerification(UId,doorId).Any();
+            if (result)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
     }
 }

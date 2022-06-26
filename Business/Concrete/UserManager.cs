@@ -3,6 +3,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities;
+using Core.Utilities.Business;
 using DataAccess.Abstract;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,21 @@ namespace Business.Concrete
     public class UserManager:IUserService
     {
         IUserDal _userDal;
+
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
         }
+
+
         [ValidationAspect(typeof(UserValidator))]
         public IResult add(User user)
         {
+            var result = BusinessRules.Run(CheckIfUIdUnique(user.UId));
+            if (result!=null)
+            {
+                return result;
+            }
             _userDal.Add(user);
             return new SuccessResult();
         }
@@ -55,6 +64,16 @@ namespace Business.Concrete
         public IResult update(User user)
         {
             _userDal.Update(user);
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfUIdUnique(string UId)
+        {
+            var result = _userDal.GetAll(p => p.UId == UId).Any();
+            if (result)
+            {
+                return new ErrorResult("Bu kart zaten kayıtlı veya daha önce kullanılmış.");
+            }
             return new SuccessResult();
         }
     }

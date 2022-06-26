@@ -28,6 +28,18 @@ namespace SDVS
         }
 
 
+
+        private void userDelete()
+        { 
+            var result = _userService.delete(_userService.getByUId(UIDTextbox.Text).Data);
+        }
+
+
+        private void userUpdate()
+        {
+            var result=_userService.update(_userService.getByUId(UIDTextbox.Text).Data);
+        }
+
         private void label4_Click(object sender, EventArgs e)
         {
 
@@ -45,20 +57,37 @@ namespace SDVS
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("lütfen kartý okutunuz.");
+            UIDTextbox.Text = "Lütfen kartý okutunuz.";
             string[] ports = SerialPort.GetPortNames();
             string[] data = { };
             string UId = "";
             SerialPort serialPort = new SerialPort(ports[0], 9600);
-
+            
+           
 
             serialPort.Open();
             if (serialPort.IsOpen)
             {
 
                 UId = serialPort.ReadLine();
-                UIDTextbox.Text = UId.Substring(0, UId.Length - 1);
+                UIDTextbox.Text = UId.Substring(0, UId.Length - 2);
             }
+            if(comboBox3.SelectedIndex == 2)
+            {
+                nameTextbox.Enabled = true;
+                surnameTextbox.Enabled = true;
+                statusCombobox.Enabled = true;
+                userTypeCombobox.Enabled = true;
+            }
+            var result= _userService.getByUId(UId.Substring(0, UId.Length - 2));
+                nameTextbox.Text = result.Data.firstName;
+                surnameTextbox.Text = result.Data.lastName;
+                userTypeCombobox.SelectedIndex=result.Data.userTypeId-1;
+                if (result.Data.status)
+                    statusCombobox.SelectedIndex = 0;
+                else statusCombobox.SelectedIndex = 1;
+           
+            serialPort.Close();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -68,7 +97,7 @@ namespace SDVS
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox3.SelectedIndex==1)
+            if (comboBox3.SelectedIndex==1|| comboBox3.SelectedIndex ==2)
             {
                 nameTextbox.Enabled = false;
                 surnameTextbox.Enabled = false;
@@ -83,6 +112,10 @@ namespace SDVS
             if (comboBox3.SelectedIndex==0)
             {
                 userAdd();
+            }
+            if (comboBox3.SelectedIndex==1)
+            {
+                userDelete();
             }
         }
     }

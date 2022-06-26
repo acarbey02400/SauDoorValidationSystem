@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entities.Concrete;
+using DataAccess.Concrete;
 using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
@@ -19,6 +20,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p=>p.UId).NotNull();
             RuleFor(p => p.status).NotNull();
             RuleFor(p => p.userTypeId).NotNull();
+       
             
             
         }

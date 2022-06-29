@@ -8,11 +8,11 @@ using System.IO;
 using System.IO.Ports;
 
 
-UserValidationDoorManager manager = new UserValidationDoorManager(new UserValidationDoorDal(), new DoorRoleManager(new DoorRoleDal()));
+//UserValidationDoorManager manager = new UserValidationDoorManager(new UserValidationDoorDal(), new DoorRoleManager(new DoorRoleDal()));
 
-var result= manager.Validate("34 75 193 75", 7);
+//var result= manager.Validate("34 75 193 75", 7);
 
-Console.WriteLine(result.Message);
+//Console.WriteLine(result.Message);
 
 //string[] ports = SerialPort.GetPortNames();
 //string[] data = { };

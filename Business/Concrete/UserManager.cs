@@ -37,6 +37,7 @@ namespace Business.Concrete
 
         public IResult delete(User user)
         {
+           
             _userDal.Delete(user);
             return new SuccessResult();
         }
@@ -63,6 +64,7 @@ namespace Business.Concrete
 
         public IResult update(User user)
         {
+           
             _userDal.Update(user);
             return new SuccessResult();
         }
@@ -76,5 +78,6 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+        
     }
 }

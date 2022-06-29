@@ -28,7 +28,8 @@ namespace Business.DependencyResolves.Autofac
             builder.RegisterType<UserTypeDal>().As<IUserTypeDal>().SingleInstance();
             builder.RegisterType<UserValidationDoorManager>().As<IUserValidationDoorService>().SingleInstance();
             builder.RegisterType<UserValidationDoorDal>().As<IUserValidationDoorDal>().SingleInstance();
-         
+            builder.RegisterType<VerificationManager>().As<IVerificationService>().SingleInstance();
+
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

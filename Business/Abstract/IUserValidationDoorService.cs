@@ -15,5 +15,6 @@ namespace Business.Abstract
         public IResult delete(UserValidationDoor userValidationDoor);
         public IDataResult<List<UserValidationDoor>> getAll();
         public IDataResult<UserValidationDoor> getById(int id);
+        public IDataResult<List<UserValidationDoor>> UserAuthDoor(string UId, int doorId);
     }
 }

@@ -17,7 +17,7 @@ namespace DataAccess.Concrete
             {
                 var result = from p in context.Users
                              where p.UId == UId
-                             join dr in context.DoorRole
+                             join dr in context.DoorRoles
                              on p.userTypeId equals dr.userTypeId
                              where dr.doorId==doorId
                              select new DoorRole { id =dr.id, doorId=dr.doorId, userTypeId=p.userTypeId };

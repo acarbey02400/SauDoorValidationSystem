@@ -39,6 +39,19 @@ namespace WebAPI.Controllers
                     return BadRequest(result);
                 }
             }
+        [HttpGet("getbytypeid")]
+        public IActionResult GetByTypeId(int TypeId)
+        {
+            var result = _userService.getByTypeId(TypeId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
 
 
         [HttpGet("getbyuid")]

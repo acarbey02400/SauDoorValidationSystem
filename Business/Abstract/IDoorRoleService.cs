@@ -15,7 +15,7 @@ namespace Business.Abstract
         public IResult delete(DoorRole doorRole);
         public IDataResult<List<DoorRole>> getAll();
         public IDataResult<DoorRole> getById(int id);
-
+        public IDataResult<List<DoorRole>> getByDoorId(int doorId);
         public IResult Verification(string UId, int doorId);
     }
 }

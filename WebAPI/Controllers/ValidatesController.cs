@@ -23,5 +23,15 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("offlinevalidate")]
+        public IActionResult offlineValidate(int doorId)
+        {
+            var result=_verificationService.OfflineValidate(doorId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

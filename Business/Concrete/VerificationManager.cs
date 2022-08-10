@@ -13,10 +13,32 @@ namespace Business.Concrete
     {
         IUserValidationDoorService _userValidationDoorService;
         IDoorRoleService _doorRoleService;
-        public VerificationManager(IUserValidationDoorService userValidationDoor, IDoorRoleService doorRoleDal)
+        IUserService _userService;
+        public VerificationManager(IUserValidationDoorService userValidationDoor, IDoorRoleService doorRoleDal, IUserService userService)
         {
             _userValidationDoorService = userValidationDoor;
             _doorRoleService = doorRoleDal;
+            _userService = userService;
+        }
+
+        public IDataResult<List<string>> OfflineValidate(int doorId)
+        {
+            List<string> UIdList = new List<string>();
+           
+           var result= _doorRoleService.getByDoorId(doorId);
+            var _result = _userService.getAll();
+            foreach (var item in _result.Data)
+            {
+                if (result.Data.Where(p=>p.userTypeId==item.userTypeId)!=null)
+                {
+                  var result2=  Validate(item.UId, doorId);
+                    if (result2.Success)
+                    {
+                        UIdList.Add(item.UId);
+                    }
+                }
+            }
+            return new SuccessDataResult<List<string>>(UIdList.ToList());
         }
 
         public IResult Validate(string UId, int doorId)
@@ -48,5 +70,7 @@ namespace Business.Concrete
             }
             return new ErrorResult("doğrulanamadı");
         }
+
+        
     }
 }

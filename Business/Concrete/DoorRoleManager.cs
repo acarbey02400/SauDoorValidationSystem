@@ -12,47 +12,51 @@ namespace Business.Concrete
 {
     public class DoorRoleManager : IDoorRoleService
     {
-        IDoorRoleDal _userClaimDal;
+        IDoorRoleDal _doorRoleDal;
 
         public DoorRoleManager(IDoorRoleDal userClaimDal)
         {
-            _userClaimDal = userClaimDal;
+            _doorRoleDal = userClaimDal;
         }
         public IResult add(DoorRole doorRole)
         {
-           _userClaimDal.Add(doorRole);
+            _doorRoleDal.Add(doorRole);
             return new SuccessResult();
         }
 
         public IResult delete(DoorRole doorRole)
         {
-            _userClaimDal.Delete(doorRole);
+            _doorRoleDal.Delete(doorRole);
             return new SuccessResult();
         }
 
         public IDataResult<List<DoorRole>> getAll()
         {
-            return new SuccessDataResult<List<DoorRole>>(_userClaimDal.GetAll());
+            return new SuccessDataResult<List<DoorRole>>(_doorRoleDal.GetAll());
         }
         public IDataResult<DoorRole> getById(int id)
         {
-            return new SuccessDataResult<DoorRole>(_userClaimDal.Get(p => p.id == id));
+            return new SuccessDataResult<DoorRole>(_doorRoleDal.Get(p => p.id == id));
         }
 
         public IResult update(DoorRole userClaim)
         {
-            _userClaimDal.Update(userClaim);
+            _doorRoleDal.Update(userClaim);
             return new SuccessResult();
         }
 
         public IResult Verification(string UId,int doorId)
         {
-           var result= _userClaimDal.AuthVerification(UId,doorId).Any();
+           var result= _doorRoleDal.AuthVerification(UId,doorId).Any();
             if (result)
             {
                 return new SuccessResult();
             }
             return new ErrorResult();
+        }
+        public IDataResult<List<DoorRole>> getByDoorId(int doorId)
+        {
+            return new SuccessDataResult<List<DoorRole>>(_doorRoleDal.GetAll(p => p.doorId == doorId));
         }
     }
 }

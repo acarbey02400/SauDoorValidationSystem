@@ -10,5 +10,6 @@ namespace Business.Abstract
     public interface IVerificationService
     {
         public IResult Validate(string UId, int doorId);
+        public IDataResult<List<string>> OfflineValidate(int doorId);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -17,6 +19,8 @@ namespace Business.Concrete
         {
             _doorDal = doorDal;
         }
+
+        [ValidationAspect(typeof(DoorValidator))]
         public IResult add(Door door)
         {
              _doorDal.Add(door);

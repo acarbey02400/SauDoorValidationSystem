@@ -38,7 +38,7 @@ namespace Business.Concrete
                     }
                 }
             }
-            return new SuccessDataResult<List<string>>(UIdList.ToList());
+            return new SuccessDataResult<List<string>>(UIdList.ToList(),UIdList.Count().ToString());
         }
 
         public IResult Validate(string UId, int doorId)

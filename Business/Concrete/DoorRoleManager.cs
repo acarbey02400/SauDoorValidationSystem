@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,6 +20,7 @@ namespace Business.Concrete
         {
             _doorRoleDal = userClaimDal;
         }
+        [ValidationAspect(typeof(DoorRoleValidator))]
         public IResult add(DoorRole doorRole)
         {
             _doorRoleDal.Add(doorRole);

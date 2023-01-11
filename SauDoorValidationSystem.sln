@@ -15,6 +15,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDVS", "SDVS\SDVS.csproj", "{3CBC033B-5EF3-4074-A03B-C59136B803A6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortCommunication", "PortCommunication\PortCommunication.csproj", "{D633FE48-6BFD-4FAB-B76D-53DBC803A232}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerialPortCommunication", "SerialPortCommunication\SerialPortCommunication.csproj", "{878CA28D-C5AC-4BB9-BC55-938E7A8E2276}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{3D33F542-95AB-4EB1-866B-721B8B41984B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerialPortComApp", "SerialPortComApp\SerialPortComApp.csproj", "{BE510B4A-B5D1-44C8-B486-8C27AECCD2F7}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupConsole", "SetupConsole\SetupConsole.vdproj", "{CB8B308C-BF07-4B6B-9AAB-D5C2D197DF0B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupConsoleV1", "SetupConsoleV1\SetupConsoleV1.vdproj", "{AB397C44-5DE1-46BC-B8C6-70123FEAE22D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +57,24 @@ Global
 		{3CBC033B-5EF3-4074-A03B-C59136B803A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CBC033B-5EF3-4074-A03B-C59136B803A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CBC033B-5EF3-4074-A03B-C59136B803A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D633FE48-6BFD-4FAB-B76D-53DBC803A232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D633FE48-6BFD-4FAB-B76D-53DBC803A232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D633FE48-6BFD-4FAB-B76D-53DBC803A232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D633FE48-6BFD-4FAB-B76D-53DBC803A232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{878CA28D-C5AC-4BB9-BC55-938E7A8E2276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{878CA28D-C5AC-4BB9-BC55-938E7A8E2276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{878CA28D-C5AC-4BB9-BC55-938E7A8E2276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{878CA28D-C5AC-4BB9-BC55-938E7A8E2276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D33F542-95AB-4EB1-866B-721B8B41984B}.Debug|Any CPU.ActiveCfg = Debug
+		{3D33F542-95AB-4EB1-866B-721B8B41984B}.Release|Any CPU.ActiveCfg = Release
+		{BE510B4A-B5D1-44C8-B486-8C27AECCD2F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE510B4A-B5D1-44C8-B486-8C27AECCD2F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE510B4A-B5D1-44C8-B486-8C27AECCD2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE510B4A-B5D1-44C8-B486-8C27AECCD2F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB8B308C-BF07-4B6B-9AAB-D5C2D197DF0B}.Debug|Any CPU.ActiveCfg = Debug
+		{CB8B308C-BF07-4B6B-9AAB-D5C2D197DF0B}.Release|Any CPU.ActiveCfg = Release
+		{AB397C44-5DE1-46BC-B8C6-70123FEAE22D}.Debug|Any CPU.ActiveCfg = Debug
+		{AB397C44-5DE1-46BC-B8C6-70123FEAE22D}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

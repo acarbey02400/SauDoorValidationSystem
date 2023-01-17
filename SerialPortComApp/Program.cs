@@ -4,9 +4,11 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace SerialPortCommunication
 {
+
     internal class Program
     {
 
@@ -16,7 +18,9 @@ namespace SerialPortCommunication
             List<string> ports = new List<string>();
             Console.WriteLine("Hello World! derleme 2");
             GetPortNames();
+            List<SerialPort> serialPorts = new List<SerialPort>();
             Console.WriteLine("port isimleri okunuyor");
+            Thread readThread = new Thread(PortsRead);
             PortsOpen();
             Console.WriteLine("port bağlantısı başladı");
             // UIdControl("asd1",false);
@@ -35,140 +39,97 @@ namespace SerialPortCommunication
                 //}
                 ports.Add("/dev/serial0");
                 ports.Add("/dev/serial1");
-               
+                ports.Add("/dev/serial2");
+                ports.Add("/dev/serial3");
+                //ports.Add("COM5");
+                //ports.Add("COM4");
+
             }
 
             void PortsOpen()
             {
                 SerialPort port1 = new SerialPort() { PortName = ports[0], BaudRate = 115200 };
-                port1.Open();
-                
+
+
                 SerialPort port2 = new SerialPort() { PortName = ports[1], BaudRate = 115200 };
-                port2.Open();
-                Console.WriteLine(port2.PortName + " baglandi.");
-                //SerialPort port3 = new SerialPort() { PortName = ports[2], BaudRate = 9600 };
-                //port3.Open();
-                //SerialPort port4 = new SerialPort() { PortName = ports[3], BaudRate = 9600 };
-                //port4.Open();
-                Console.WriteLine("port dinleme basladi.");
-                PortsRead(port1, port2);//, port3);//port4);
+
+
+                SerialPort port3 = new SerialPort() { PortName = ports[2], BaudRate = 115200 };
                
+                SerialPort port4 = new SerialPort() { PortName = ports[3], BaudRate = 115200 };
+               
+
+
+                serialPorts.Add(port1);
+                serialPorts.Add(port2);
+                serialPorts.Add(port3);
+                serialPorts.Add(port4);
+                readThread.Start();
             }
-            void PortsRead(SerialPort port1, SerialPort port2)//, SerialPort port3)//, SerialPort port4)
+
+            void PortsRead()//, SerialPort port3)//, SerialPort port4)
             {
-                
-                    if (port1.IsOpen)
+
+                Console.WriteLine("ports read open");
+                while (true)
+                {
+                    foreach (var item in serialPorts)
                     {
 
-                        string UId = port1.ReadLine();
-                        if (UId.Length == 0)
-                        {
-                            
-                        }
-                        else
-                        {
-                            Console.WriteLine(UId);
-                            string[] value = UId.Split(',');
 
-                            if (value[0] == masterCard)
-                            {
-                                AddUId(port1);
-                            }
-                            else
-                            {
-                                UIdControl(value[0], false);
-                            }
-                            UId = "";
-                        }
-                        port1.ReadExisting();
-                    }
-                    else
-                    {
-                        PortsOpen();
-                    }
-                    if (port2.IsOpen)
-                    {
-                        string UId = port2.ReadLine();
-                        if (UId.Length == 0)
-                        {
-                            
-                        }
-                        else
-                        {
-                            Console.WriteLine(UId);
-                            string[] value = UId.Split(',');
+                        string UId = string.Empty;
+                        item.WriteTimeout = 500;
+                        item.ReadTimeout = 500;
+                        item.Open();
 
-                            if (value[0] == masterCard)
-                            {
-                                AddUId(port2);
-                            }
-                            else
-                            {
-                                UIdControl(value[0], false);
-                            }
-                            UId = "";
-                        }
-                        port2.ReadExisting();
-                    }
-                    else
-                    {
-                        PortsOpen();
-                    }
-                    /*if (port3.IsOpen)
-                    {
-                        string UId = port1.ReadLine();
-                        if (UId.Length == 0)
+                        try
                         {
-                            continue;
+                            UId = item.ReadLine(); // Wait for data reception
+                            Thread.Sleep(200);
+                            if (UId.Length != 0)
+                            {
+                                Console.WriteLine(UId);
+                                var value = UId.Split(',');
+
+                                //string[] value = UId.Split(',');
+
+                                if (value[0] == masterCard)
+                                {
+                                    AddUId(item);
+                                }
+                                else
+                                {
+
+                                    if (UIdControl(value[0], false))
+                                    {
+                                        item.WriteLine("true.");
+
+                                    }
+
+                                }
+                                UId = "";
+                            }
+
+                            item.Close();
+
                         }
-                        else
+                        catch (TimeoutException Ex)//Catch Time out Exception
                         {
-                            Console.WriteLine(UId);
-                            string[] value = UId.Split(',');
-                            if (value[0] == masterCard)
-                            {
-                                UIdControl(value[1], true);
-                            }
-                            else
-                            {
-                                UIdControl(value[0], false);
-                            }
-                            UId = "";
+                            item.Close();
+
                         }
+
                     }
-                    else
-                    {
-                        PortsOpen();
-                    }
-                    if (port4.IsOpen)
-                    {
-                        string UId = port1.ReadLine();
-                        if (UId.Length == 0)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine(UId);
-                            string[] value = UId.Split(',');
-                            if (value[0] == masterCard)
-                            {
-                                UIdControl(value[1], true);
-                            }
-                            else
-                            {
-                                UIdControl(value[0], false);
-                            }
-                            UId = "";
-                        }
-                    }
-                    else
-                    {
-                        PortsOpen();
-                    }*/
-                    PortsRead(port1,port2);
-                
+
+                }
             }
+
+
+
+
+
+
+
             bool UIdControl(string UId, bool isNewUId)
             {
 
@@ -237,9 +198,7 @@ namespace SerialPortCommunication
                     }
                 }
             }
+
         }
-
-
-
     }
 }

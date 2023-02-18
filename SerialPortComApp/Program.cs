@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -14,114 +15,135 @@ namespace SerialPortCommunication
 
         static void Main(string[] args)
         {
-            string masterCard = "116 30 144 171 ";
+
+            bool isAddUId = false;
             List<string> ports = new List<string>();
-            Console.WriteLine("Hello World! derleme 2");
+
+            Console.WriteLine("Versin 1.0: Access denied hatasina cozum araniyor.\nLutfen 20 saniye icinde usb baglantisini saglayiniz.");
+            Thread.Sleep(20000);
             GetPortNames();
             List<SerialPort> serialPorts = new List<SerialPort>();
+
             Console.WriteLine("port isimleri okunuyor");
-            Thread readThread = new Thread(PortsRead);
+            //Thread readThread = new Thread(PortsRead);
+
             PortsOpen();
-            Console.WriteLine("port bağlantısı başladı");
-            // UIdControl("asd1",false);
+
+            // readThread.Start();
+            PortsRead();
+
             void GetPortNames()
             {
 
-                //foreach (var item in SerialPort.GetPortNames())
-                //{
-                //    ports.Add(item);
-                //    Console.WriteLine("port eklendi: "+item);
-                //}
-                //if (ports.Count == 2)
-                //{
-                //    Console.WriteLine("port okunamadı.");
-                //    return;
-                //}
+                /* foreach (var item in SerialPort.GetPortNames())
+                  {
+                      ports.Add(item);
+                      Console.WriteLine("port eklendi: " + item);
+                  }
+                  if (ports.Count == 2)
+                  {
+                      Console.WriteLine("port okunamadı.");
+                      return;
+                  }
+                
+           
                 ports.Add("/dev/serial0");
                 ports.Add("/dev/serial1");
                 ports.Add("/dev/serial2");
                 ports.Add("/dev/serial3");
-                //ports.Add("COM5");
-                //ports.Add("COM4");
-
+               
+                 */
+                ports.Add("/dev/ttyUSB0");
+                ports.Add("/dev/ttyUSB1");
+                ports.Add("/dev/ttyUSB2");
+                ports.Add("/dev/ttyUSB3");
+                Console.WriteLine("port name /dev/ttyUSB");
             }
 
             void PortsOpen()
             {
-                SerialPort port1 = new SerialPort() { PortName = ports[0], BaudRate = 115200 };
+                SerialPort port1 = new SerialPort() { PortName = ports[0], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
 
-                SerialPort port2 = new SerialPort() { PortName = ports[1], BaudRate = 115200 };
+                SerialPort port2 = new SerialPort() { PortName = ports[1], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
+
+                
+                 SerialPort port3 = new SerialPort() { PortName = ports[2], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
+
+                 SerialPort port4 = new SerialPort() { PortName = ports[3], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
 
-                SerialPort port3 = new SerialPort() { PortName = ports[2], BaudRate = 115200 };
-               
-                SerialPort port4 = new SerialPort() { PortName = ports[3], BaudRate = 115200 };
-               
 
 
                 serialPorts.Add(port1);
                 serialPorts.Add(port2);
                 serialPorts.Add(port3);
                 serialPorts.Add(port4);
-                readThread.Start();
+
+                Console.WriteLine("ports are created");
+
             }
 
-            void PortsRead()//, SerialPort port3)//, SerialPort port4)
+
+
+            void Read(SerialPort item)//, SerialPort port3)//, SerialPort port4)
             {
 
-                Console.WriteLine("ports read open");
-                while (true)
+                if (!item.IsOpen)
                 {
-                    foreach (var item in serialPorts)
+                    Console.WriteLine("port opening");
+                    item.Open();
+                    item.RtsEnable= true;
+                    item.DtrEnable=true;
+                   
+                }
+                
+                
+                string UId = string.Empty;
+
+                try
+                {
+                    Thread.Sleep(200);
+                     UId = item.ReadLine(); // Wait for data reception
+
+                    if (UId.Length != 0)
                     {
+                        Console.WriteLine(UId);
+                        var value = UId.Split(',');
 
-
-                        string UId = string.Empty;
-                        item.WriteTimeout = 500;
-                        item.ReadTimeout = 500;
-                        item.Open();
-
-                        try
+                        if (UId[0] == 'A')
                         {
-                            UId = item.ReadLine(); // Wait for data reception
-                            Thread.Sleep(200);
-                            if (UId.Length != 0)
-                            {
-                                Console.WriteLine(UId);
-                                var value = UId.Split(',');
-
-                                //string[] value = UId.Split(',');
-
-                                if (value[0] == masterCard)
-                                {
-                                    AddUId(item);
-                                }
-                                else
-                                {
-
-                                    if (UIdControl(value[0], false))
-                                    {
-                                        item.WriteLine("true.");
-
-                                    }
-
-                                }
-                                UId = "";
-                            }
-
-                            item.Close();
-
-                        }
-                        catch (TimeoutException Ex)//Catch Time out Exception
-                        {
-                            item.Close();
-
+                            UId = UId.Substring(1, UId.Length - 1);
+                            AddUId(UId);
                         }
 
+                        else if (UIdControl(value[0]))
+                        {
+                            item.WriteLine("true.");
+
+                        }
+                        else
+                        {
+                            item.WriteLine("false.");
+                        }
+
+
+                        UId = "";
                     }
 
+                    //item.Close();
+
                 }
+                catch (TimeoutException Ex)//Catch Time out Exception
+                {
+                    //item.Close();
+                    //Console.WriteLine(Ex.Message);
+
+                }
+
+
+
+
             }
 
 
@@ -130,7 +152,7 @@ namespace SerialPortCommunication
 
 
 
-            bool UIdControl(string UId, bool isNewUId)
+            bool UIdControl(string UId)
             {
 
 
@@ -159,46 +181,95 @@ namespace SerialPortCommunication
                 return false;
             }
 
-            void AddUId(SerialPort port)
+            void AddUId(string UId)
             {
-                if (port.IsOpen)
+
+
+                string[] value = UId.Split(',');
+                List<string> satirlarList = new List<string>();
+                string filelocation = @"./";
+                string filename = "data.txt";
+                using (StreamReader sr = new StreamReader("data.txt"))
                 {
-                    string UId = port.ReadLine();
-                    string[] val = UId.Split(',');
-                    if (UId.Length == 0 || val[0] == masterCard)
+                    string satir; //burada okuduğunuz her satırı atamamız için gerekli değişkeni tanımlıyoruz.
+                    while ((satir = sr.ReadLine()) != null) //Döngü kurup eğer satır boş değilse, satirlarList List'ine ekleme yapıyoruz.
                     {
-                        UId = "";
-                        AddUId(port);
+                        satirlarList.Add(satir);
 
                     }
-                    else
-                    {
-
-                        string[] value = UId.Split(',');
-
-
-                        string filelocation = @"./";
-                        string filename = "data.txt";
-                        if (File.Exists(filelocation + filename))
-                        {
-                            StreamWriter sw = new StreamWriter(filelocation + filename, true);
-                            sw.WriteLine(value[0]);
-                            sw.Close();
-
-
-                            UId = "";
-                            port.ReadExisting();
-                        }
-                        else
-                        {
-                            // Dosya yok  
-                        }
-
-
-                    }
+                    sr.Close();
                 }
-            }
 
+                foreach (var item in satirlarList)
+                {
+                    if (value[0] == item)
+                    {
+                        UIdDelete(satirlarList, filelocation, filename, item);
+                        return;
+                    }
+
+                }
+
+                if (File.Exists(filelocation + filename))
+                {
+                    StreamWriter sw = new StreamWriter(filelocation + filename, true);
+                    sw.WriteLine(value[0]);
+                    sw.Close();
+
+
+                    UId = "";
+
+                    Console.WriteLine("ekleme islemi basarili.");
+                    return;
+                }
+                else
+                {
+                    // Dosya yok  
+                    return;
+                }
+
+            }
+            void PortsRead()
+            {
+
+                // readThread.Start();
+                while (true)
+                {
+                    foreach (var item in serialPorts)
+                    {
+                        //if (item.IsOpen)
+                        //{
+                        //   item.Close();
+                        //}
+                        Read(item);
+                    }
+
+                }
+
+            }
+        }
+
+
+
+        private static void UIdDelete(List<string> satirlarList, string filelocation, string filename, string item)
+        {
+            satirlarList.Remove(item);
+            using (TextWriter tw = new StreamWriter(filelocation + filename))
+            {
+                tw.Write("");
+                tw.Close();
+            }
+            using (StreamWriter sw = new StreamWriter(filelocation + filename))
+            {
+                foreach (var x in satirlarList)
+                {
+
+                    sw.WriteLine(x);
+
+                }
+                sw.Close();
+            }
+            Console.WriteLine("Silme işlemi basarili.");
         }
     }
 }

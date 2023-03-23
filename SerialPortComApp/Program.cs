@@ -19,7 +19,7 @@ namespace SerialPortCommunication
             bool isAddUId = false;
             List<string> ports = new List<string>();
 
-            Console.WriteLine("Versin 1.0: Access denied hatasina cozum araniyor.\nLutfen 20 saniye icinde usb baglantisini saglayiniz.");
+            Console.WriteLine("Versin 1.1: Silme isleminden sonra kapanma problemine cozum araniyor.\nLutfen 20 saniye icinde usb baglantisini saglayiniz.");
             Thread.Sleep(20000);
             GetPortNames();
             List<SerialPort> serialPorts = new List<SerialPort>();
@@ -57,6 +57,9 @@ namespace SerialPortCommunication
                 ports.Add("/dev/ttyUSB1");
                 ports.Add("/dev/ttyUSB2");
                 ports.Add("/dev/ttyUSB3");
+                ports.Add("/dev/ttyUSB4");
+                ports.Add("/dev/ttyUSB5");
+
                 Console.WriteLine("port name /dev/ttyUSB");
             }
 
@@ -67,19 +70,20 @@ namespace SerialPortCommunication
 
                 SerialPort port2 = new SerialPort() { PortName = ports[1], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
-                
-                 SerialPort port3 = new SerialPort() { PortName = ports[2], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
-                 SerialPort port4 = new SerialPort() { PortName = ports[3], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
+                SerialPort port3 = new SerialPort() { PortName = ports[2], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
+                SerialPort port4 = new SerialPort() { PortName = ports[3], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
-
+                SerialPort port5 = new SerialPort() { PortName = ports[4], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
+                SerialPort port6 = new SerialPort() { PortName = ports[5], BaudRate = 115200, WriteTimeout = 600, ReadTimeout = 600 };
 
                 serialPorts.Add(port1);
                 serialPorts.Add(port2);
                 serialPorts.Add(port3);
                 serialPorts.Add(port4);
-
+                serialPorts.Add(port5);
+                serialPorts.Add(port6);
                 Console.WriteLine("ports are created");
 
             }
@@ -93,18 +97,18 @@ namespace SerialPortCommunication
                 {
                     Console.WriteLine("port opening");
                     item.Open();
-                    item.RtsEnable= true;
-                    item.DtrEnable=true;
-                   
+                    item.RtsEnable = true;
+                    item.DtrEnable = true;
+
                 }
-                
-                
+
+
                 string UId = string.Empty;
 
                 try
                 {
                     Thread.Sleep(200);
-                     UId = item.ReadLine(); // Wait for data reception
+                    UId = item.ReadLine(); // Wait for data reception
 
                     if (UId.Length != 0)
                     {
@@ -159,7 +163,7 @@ namespace SerialPortCommunication
                 List<string> satirlarList = new List<string>();
                 using (StreamReader sr = new StreamReader("data.txt"))
                 {
-                    string satir; //burada okuduğunuz her satırı atamamız için gerekli değişkeni tanımlıyoruz.
+                    string satir=string.Empty; //burada okuduğunuz her satırı atamamız için gerekli değişkeni tanımlıyoruz.
                     while ((satir = sr.ReadLine()) != null) //Döngü kurup eğer satır boş değilse, satirlarList List'ine ekleme yapıyoruz.
                     {
                         satirlarList.Add(satir);
@@ -171,13 +175,13 @@ namespace SerialPortCommunication
                 {
                     if (item == UId)
                     {
-                        Console.WriteLine("kapı açıldı");
+                        Console.WriteLine("Door opening");
                         return true;
 
                     }
                 }
 
-                Console.WriteLine("kapı açılamadı");
+                Console.WriteLine("Permisson Denied");
                 return false;
             }
 
@@ -247,29 +251,30 @@ namespace SerialPortCommunication
                 }
 
             }
-        }
-
-
-
-        private static void UIdDelete(List<string> satirlarList, string filelocation, string filename, string item)
-        {
-            satirlarList.Remove(item);
-            using (TextWriter tw = new StreamWriter(filelocation + filename))
+            void UIdDelete(List<string> satirlarList, string filelocation, string filename, string item)
             {
-                tw.Write("");
-                tw.Close();
-            }
-            using (StreamWriter sw = new StreamWriter(filelocation + filename))
-            {
-                foreach (var x in satirlarList)
+                satirlarList.Remove(item);
+                using (TextWriter tw = new StreamWriter(filelocation + filename))
                 {
-
-                    sw.WriteLine(x);
-
+                    tw.Write("");
+                    tw.Close();
                 }
-                sw.Close();
+                using (StreamWriter sw = new StreamWriter(filelocation + filename))
+                {
+                    foreach (var x in satirlarList)
+                    {
+
+                        sw.WriteLine(x);
+
+                    }
+                    sw.Close();
+                }
+                Console.WriteLine("Silme işlemi basarili.");
             }
-            Console.WriteLine("Silme işlemi basarili.");
         }
+
+
+
+
     }
 }
